@@ -111,3 +111,57 @@ function crear_promocion(array $datos, int $usuarioId): int
 
     return (int) db()->lastInsertId();
 }
+
+function listar_promociones(?int $estatus, ?int $usuarioId): array
+{
+    $sql = '
+        SELECT p.*, u.nombre AS solicitante
+        FROM promociones p
+        JOIN usuarios u ON p.usuario_id = u.id
+        WHERE 1=1
+    ';
+    $params = [];
+
+    if ($estatus !== null) {
+        $sql .= ' AND p.estatus = :estatus';
+        $params[':estatus'] = $estatus;
+    }
+
+    if ($usuarioId !== null) {
+        $sql .= ' AND p.usuario_id = :usuario_id';
+        $params[':usuario_id'] = $usuarioId;
+    }
+
+    $sql .= ' ORDER BY p.fecha_inicio DESC';
+
+    $stmt = db()->prepare($sql);
+    $stmt->execute($params);
+
+    return $stmt->fetchAll();
+}
+
+function contar_por_estatus(?int $usuarioId): array
+{
+    $sql = 'SELECT estatus, COUNT(*) FROM promociones';
+    $params = [];
+
+    if ($usuarioId !== null) {
+        $sql .= ' WHERE usuario_id = :usuario_id';
+        $params[':usuario_id'] = $usuarioId;
+    }
+
+    $stmt = db()->prepare($sql . ' GROUP BY estatus');
+    $stmt->execute($params);
+
+    return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+}
+
+function formatear_importe(float|int|string $importe, int $moneda): string
+{
+    return '$' . number_format((float) $importe, 2) . ' ' . MONEDAS[$moneda];
+}
+
+function formatear_fecha(string $fecha): string
+{
+    return date('d/m/Y H:i', strtotime($fecha));
+}

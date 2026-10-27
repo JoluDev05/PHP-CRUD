@@ -14,3 +14,12 @@ button, .btn { display: inline-block; margin-top: 1rem; padding: .5rem 1rem; bac
 table { width: 100%; border-collapse: collapse; background: #fff; }
 th, td { padding: .5rem; border-bottom: 1px solid #ddd; text-align: left; }
 .login { max-width: 360px; margin: 4rem auto; }
+.tabs { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0; }
+.tabs a { padding: .4rem .8rem; border-radius: 999px; background: #e3e7ee; color: #1f3a5f; text-decoration: none; font-size: .9rem; }
+.tabs a.activa { background: #1f3a5f; color: #fff; }
+.badge { padding: .15rem .6rem; border-radius: 999px; font-size: .8rem; font-weight: 600; }
+.estatus-0 { background: #fff4d6; color: #8a6100; }
+.estatus-1 { background: #e6f4ea; color: #1e6b34; }
+.estatus-2 { background: #e0ecff; color: #1d4ea3; }
+.estatus-3 { background: #fde8e8; color: #9b1c1c; }
+small.error { display: block; margin: .25rem 0 0; padding: .25rem .5rem; }
