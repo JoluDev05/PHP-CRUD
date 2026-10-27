@@ -1,0 +1,16 @@
+* { box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; margin: 0; background: #f4f5f7; color: #222; }
+.nav { display: flex; gap: 1rem; align-items: center; padding: .75rem 1.5rem; background: #1f3a5f; color: #fff; }
+.nav a { color: #fff; text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+.spacer { flex: 1; }
+.container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+.card { background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+label { display: block; margin-top: 1rem; font-weight: 600; }
+input, select, textarea { width: 100%; padding: .5rem; margin-top: .25rem; border: 1px solid #bbb; border-radius: 4px; font: inherit; }
+button, .btn { display: inline-block; margin-top: 1rem; padding: .5rem 1rem; background: #1f3a5f; color: #fff; border: 0; border-radius: 4px; cursor: pointer; text-decoration: none; font: inherit; }
+.error { background: #fde8e8; color: #9b1c1c; padding: .75rem; border-radius: 4px; margin-bottom: 1rem; }
+.ok { background: #e6f4ea; color: #1e6b34; padding: .75rem; border-radius: 4px; margin-bottom: 1rem; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: .5rem; border-bottom: 1px solid #ddd; text-align: left; }
+.login { max-width: 360px; margin: 4rem auto; }
