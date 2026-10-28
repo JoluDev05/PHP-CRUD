@@ -5,6 +5,7 @@ require __DIR__ . '/../app/auth.php';
 require __DIR__ . '/../app/promociones.php';
 
 $usuario = requerir_login();
+completar_vencidas();
 
 // El admin ve todas; el solicitante solo las suyas.
 $filtroUsuario = es_admin() ? null : $usuario['id'];
@@ -48,6 +49,7 @@ require __DIR__ . '/../app/header.php';
                     <th>Vigencia</th>
                     <th>Estatus</th>
                     <th>Comentario</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,6 +71,15 @@ require __DIR__ . '/../app/header.php';
                                 <strong>Motivo de rechazo:</strong>
                             <?php endif; ?>
                             <?= h($p['comentario']) ?>
+                        </td>
+                        <td>
+                            <?php if ((int) $p['estatus'] === 0): ?>
+                                <?php if (es_admin()): ?>
+                                    <a href="revisar.php?id=<?= (int) $p['id'] ?>">Revisar</a>
+                                <?php else: ?>
+                                    <a href="editar.php?id=<?= (int) $p['id'] ?>">Editar</a>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
