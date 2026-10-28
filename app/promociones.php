@@ -165,3 +165,66 @@ function formatear_fecha(string $fecha): string
 {
     return date('d/m/Y H:i', strtotime($fecha));
 }
+
+function obtener_promocion(int $id): ?array
+{
+    $stmt = db()->prepare('
+        SELECT p.*, u.nombre AS solicitante
+        FROM promociones p
+        JOIN usuarios u ON u.id = p.usuario_id
+        WHERE p.id = :id
+    ');
+    $stmt->execute([':id' => $id]);
+
+    return $stmt->fetch() ?: null;
+}
+
+/** Solo actualiza si es del usuario y sigue Pendiente. Devuelve false si no pudo. */
+function actualizar_promocion(int $id, int $usuarioId, array $datos): bool
+{
+    $stmt = db()->prepare('
+        UPDATE promociones
+        SET producto = :producto, importe = :importe, moneda = :moneda,
+            fecha_inicio = :fecha_inicio, fecha_fin = :fecha_fin, comentario = :comentario
+        WHERE id = :id AND usuario_id = :usuario_id AND estatus = 0
+    ');
+
+    $stmt->execute([
+        ':producto' => $datos['producto'],
+        ':importe' => $datos['importe'],
+        ':moneda' => $datos['moneda'],
+        ':fecha_inicio' => $datos['fecha_inicio'],
+        ':fecha_fin' => $datos['fecha_fin'],
+        ':comentario' => $datos['comentario'],
+        ':id' => $id,
+        ':usuario_id' => $usuarioId,
+    ]);
+
+    return $stmt->rowCount() === 1;
+}
+
+/** Aprueba (1) o rechaza (3) una promoción Pendiente. $comentario null conserva el actual. */
+function resolver_promocion(int $id, int $estatus, ?string $comentario): bool
+{
+    $stmt = db()->prepare('
+        UPDATE promociones
+        SET estatus = :estatus, comentario = COALESCE(:comentario, comentario)
+        WHERE id = :id AND estatus = 0
+    ');
+    $stmt->execute([':estatus' => $estatus, ':comentario' => $comentario, ':id' => $id]);
+
+    return $stmt->rowCount() === 1;
+}
+
+/** Las Activas cuya fecha de fin ya pasó se marcan como Completadas. */
+function completar_vencidas(): void
+{
+    $stmt = db()->prepare('UPDATE promociones SET estatus = 2 WHERE estatus = 1 AND fecha_fin < :ahora');
+    $stmt->execute([':ahora' => date('Y-m-d H:i:s')]);
+}
+
+/** "2026-10-27 15:51:00" -> "2026-10-27T15:51" para el input datetime-local. */
+function fecha_para_input(string $fecha): string
+{
+    return str_replace(' ', 'T', substr($fecha, 0, 16));
+}
