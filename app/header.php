@@ -16,6 +16,7 @@
             <a href="index.php">Inicio</a>
             <?php if ($usuario['rol'] === 'SOLICITANTE'): ?>
                 <a href="nueva.php">Nueva promoción</a>
+                <a href="importar.php">Importar Excel</a>
             <?php endif; ?>
             <span class="spacer"></span>
             <span><?= h($usuario['nombre']) ?> (<?= h($usuario['rol']) ?>)</span>
