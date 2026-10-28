@@ -13,14 +13,19 @@
     <?php if ($usuario): ?>
         <nav class="nav">
             <strong>Promociones internas</strong>
-            <a href="index.php">Inicio</a>
-            <?php if ($usuario['rol'] === 'SOLICITANTE'): ?>
-                <a href="nueva.php">Nueva promoción</a>
-                <a href="importar.php">Importar Excel</a>
-            <?php endif; ?>
-            <span class="spacer"></span>
-            <span><?= h($usuario['nombre']) ?> (<?= h($usuario['rol']) ?>)</span>
-            <a href="logout.php">Salir</a>
+            <input type="checkbox" id="menu-toggle" class="menu-toggle" hidden>
+            <label for="menu-toggle" class="hamburguesa" aria-label="Abrir menú">&#9776;</label>
+            <div class="nav-links">
+                <a href="index.php">Inicio</a>
+                <?php if ($usuario['rol'] === 'SOLICITANTE'): ?>
+                    <a href="nueva.php">Nueva promoción</a>
+                    <a href="importar.php">Importar Excel</a>
+                <?php endif; ?>
+                <a href="exportar.php<?= ($estatus ?? null) !== null ? '?estatus=' . (int) $estatus : '' ?>">Exportar Excel</a>
+                <span class="spacer"></span>
+                <span><?= h($usuario['nombre']) ?> (<?= h($usuario['rol']) ?>)</span>
+                <a href="logout.php">Salir</a>
+            </div>
         </nav>
     <?php endif; ?>
     <main class="container">

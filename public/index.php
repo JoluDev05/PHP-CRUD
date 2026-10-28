@@ -34,7 +34,7 @@ require __DIR__ . '/../app/header.php';
             </a>
         <?php endforeach; ?>
     </div>
-
+    
     <?php if (!$promociones): ?>
         <p>No hay promociones para mostrar.</p>
     <?php else: ?>
@@ -55,24 +55,24 @@ require __DIR__ . '/../app/header.php';
             <tbody>
                 <?php foreach ($promociones as $p): ?>
                     <tr>
-                        <td><?= (int) $p['id'] ?></td>
+                        <td data-label="#"><?= (int) $p['id'] ?></td>
                         <?php if (es_admin()): ?>
-                            <td><?= h($p['solicitante']) ?></td><?php endif; ?>
-                        <td><?= h($p['producto']) ?></td>
-                        <td><?= h(formatear_importe($p['importe'], (int) $p['moneda'])) ?></td>
-                        <td>
+                            <td data-label="Solicitante"><?= h($p['solicitante']) ?></td><?php endif; ?>
+                        <td data-label="Producto"><?= h($p['producto']) ?></td>
+                        <td data-label="Importe"><?= h(formatear_importe($p['importe'], (int) $p['moneda'])) ?></td>
+                        <td data-label="Vigencia">
                             <?= h(formatear_fecha($p['fecha_inicio'])) ?><br>
                             <?= h(formatear_fecha($p['fecha_fin'])) ?>
                         </td>
-                        <td><span class="badge estatus-<?= (int) $p['estatus'] ?>"><?= h(ESTATUS[(int) $p['estatus']]) ?></span>
+                        <td data-label="Estatus"><span class="badge estatus-<?= (int) $p['estatus'] ?>"><?= h(ESTATUS[(int) $p['estatus']]) ?></span>
                         </td>
-                        <td>
+                        <td data-label="Comentario">
                             <?php if ((int) $p['estatus'] === 3): ?>
                                 <strong>Motivo de rechazo:</strong>
                             <?php endif; ?>
                             <?= h($p['comentario']) ?>
                         </td>
-                        <td>
+                        <td data-label="Acciones">
                             <?php if ((int) $p['estatus'] === 0): ?>
                                 <?php if (es_admin()): ?>
                                     <a href="revisar.php?id=<?= (int) $p['id'] ?>">Revisar</a>
